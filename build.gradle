@@ -49,6 +49,6 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker
 task texturePacker {
     doLast {
         logger.info "Calling TexturePacker: " + texturePacker
-        TexturePacker.process("ui_raw/", "ui_2/", "atlas_name")
+        TexturePacker.process("assets_raw/ui_raw/", "assets/ui/", "uiskin")
     }
 }

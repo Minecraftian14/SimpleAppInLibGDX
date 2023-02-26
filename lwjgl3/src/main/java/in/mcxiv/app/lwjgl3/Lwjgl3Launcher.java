@@ -2,7 +2,6 @@ package in.mcxiv.app.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import in.mcxiv.app.AppManager;
 
 /**
@@ -10,7 +9,6 @@ import in.mcxiv.app.AppManager;
  */
 public class Lwjgl3Launcher {
     public static void main(String[] args) {
-        TexturePacker.process("ui_raw/", "ui/", "uiskin");
         createApplication();
     }
 

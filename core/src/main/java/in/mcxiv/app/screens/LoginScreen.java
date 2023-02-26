@@ -32,7 +32,6 @@ public class LoginScreen extends AbstractScreen {
     AnimationController animationController;
     ModelBatch modelBatch;
     Environment environment;
-    float time_elapsed = 0;
 
     public LoginScreen(AppManager app) {
         super(app);
@@ -60,8 +59,8 @@ public class LoginScreen extends AbstractScreen {
 
         modelBatch = new ModelBatch();
         environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, .6f, .6f, .6f, .6f));
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+//        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, .6f, .6f, .6f, .6f));
+//        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
 //        fieldActorFor(new Image(VisUI.getSkin().getRegion("logo")))
 //                .expand(0, 0).fill(0, 0).center().row();
