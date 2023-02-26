@@ -21,7 +21,7 @@ I also used a bit of Shaders to give me a shock wave effect whenever a person cl
 
 And the whole screen-to-screen transition is animated! Please view this screen record:
 
-<img src="docs/screenrec" width="200"/>
+<img src="docs/screenrec.gif" width="200"/>
 
 To run this project on desktop:
 - `lwjgl3:run`: starts the application.
