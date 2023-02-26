@@ -18,6 +18,8 @@ import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneAdapter;
 import in.mcxiv.app.AppManager;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
+import java.time.LocalDate;
+
 public class MainScreen extends AbstractScreen {
 
     public MainScreen(AppManager app) {
@@ -58,7 +60,8 @@ public class MainScreen extends AbstractScreen {
 
         tabbedPane.add(tab(contentTop("Statistics"), "STATISTICS"));
         tabbedPane.add(tab(contentTop("Journey"), "JOURNEY"));
-
+        tabbedPane.switchTab(0);
+        
         maUtil.hackTheForbiddenBonesOutFromTheirCharredLives(tabbedPane);
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,9 +85,10 @@ public class MainScreen extends AbstractScreen {
         root.add(tabbedPane.getTable()).growX().row();
         root.add(botContent).growX().row();
 
-        tabbedPane.add(tab(contentBottom("Week"), "WEEK"));
-        tabbedPane.add(tab(contentBottom("Month"), "MONTH"));
-        tabbedPane.add(tab(contentBottom("Year"), "YEAR"));
+        tabbedPane.add(tab(contentBottom("week"), "WEEK"));
+        tabbedPane.add(tab(contentBottom("month"), "MONTH"));
+        tabbedPane.add(tab(contentBottom("year"), "YEAR"));
+        tabbedPane.switchTab(0);
 
         maUtil.hackTheForbiddenBonesOutFromTheirCharredLives(tabbedPane);
 
@@ -109,16 +113,28 @@ public class MainScreen extends AbstractScreen {
     }
 
     private VisTable contentBottom(String name) {
+        int r = name.equals("week") ? 7 : name.equals("month") ? 30 : name.equals("year") ? 365 : 1000;
         VisTable content = new VisTable();
         content.defaults().growX().pad(0, 20, 10, 20);
         content.add(new VisLabel("TOTAL", "small")).row();
-        content.add(new VisLabel("43")).padBottom(60);
-        content.add(new VisLabel("May 23 - May 29", "small")).padBottom(60)
+        content.add(new VisLabel("" + ((43 * r) / 7))).padBottom(60);
+        LocalDate now = LocalDate.now();
+        LocalDate pre = r == 7 ? now.minusDays(7) : r == 30 ? now.minusMonths(1) : now.minusYears(1);
+        String yea = String.valueOf(now.getYear()).substring(2);
+        String lye = String.valueOf(pre.getYear()).substring(2);
+        String mon = String.valueOf(now.getMonth()).substring(0, 3);
+        String lmo = String.valueOf(pre.getMonth()).substring(0, 3);
+        String dat = String.valueOf(now.getDayOfMonth());
+        String lda = String.valueOf(pre.getDayOfMonth());
+        content.add(new VisLabel(
+                        r == 7 ? String.format("%s %s - %s %s", lda, lmo, dat, mon) :
+                                String.format("%s %s %s - %s %s %s", lda, lmo, lye, dat, mon, yea),
+                        "small")).padBottom(60)
                 .fill(0, 0).right().row();
 
         ShapeDrawer drawer = new ShapeDrawer(batch, VisUI.getSkin().getRegion("pixel"));
-        float values[] = new float[7];
-        for (int i = 0; i < 7; i++)
+        float values[] = new float[r];
+        for (int i = 0; i < r; i++)
             values[i] = MathUtils.random(0.3f, 0.8f);
 
         content.add(new Widget() {
@@ -153,17 +169,22 @@ public class MainScreen extends AbstractScreen {
 
                 float x = getX(), y = getY(), w = getWidth(), h = getHeight();
 
-                for (int i = 0; i < 8; i++)
-                    drawer.line(x + i * w / 7, y, x + i * w / 7, y + h, VisUI.getSkin().getColor("ui-grey"));
+                if (r <= 30) {
 
-                for (int i = 0; i < 7; i++) {
-                    float ah = (h - w / 28) * values[i];
-                    float ax = x + (i * 8 + 4) * w / 56;
-                    drawer.filledRectangle(ax - w / 56, y + w / 56, w / 28, ah, VisUI.getSkin().getColor("ui-blue"));
-                    drawer.filledCircle(ax, y + w / 56, w / 56, VisUI.getSkin().getColor("ui-blue"));
-                    drawer.filledCircle(ax, y + w / 56 + ah, w / 56, VisUI.getSkin().getColor("ui-blue"));
+                    for (int i = 0; i < r + 1; i++)
+                        drawer.line(x + i * w / r, y, x + i * w / r, y + h, VisUI.getSkin().getColor("ui-grey"));
+
+                    for (int i = 0; i < r; i++) {
+                        float ah = (h - w / (4 * r)) * values[i];
+                        float ax = x + (i * 8 + 4) * w / (8 * r);
+                        drawer.filledRectangle(ax - w / (8 * r), y + w / (8 * r), w / (4 * r), ah, VisUI.getSkin().getColor("ui-blue"));
+                        drawer.filledCircle(ax, y + w / (8 * r), w / (8 * r), VisUI.getSkin().getColor("ui-blue"));
+                        drawer.filledCircle(ax, y + w / (8 * r) + ah, w / (8 * r), VisUI.getSkin().getColor("ui-blue"));
+                    }
+                } else {
+                    for (int i = 0; i < r; i++)
+                        drawer.filledRectangle(x + i * w / r, y, w / r, h * values[i], VisUI.getSkin().getColor("ui-blue"));
                 }
-
             }
         }).colspan(2).fill(0, 0);
         return content;

@@ -33,7 +33,7 @@ public class SignupScreen extends AbstractScreen {
         fieldActor(maUtil.combo());
 
         fieldTitle("LABEL");
-        fieldActor(maUtil.field("password"));
+        fieldActor(maUtil.field("default"));
 
         fieldActor(maUtil.blueButton("CONTINUE"), 40);
 

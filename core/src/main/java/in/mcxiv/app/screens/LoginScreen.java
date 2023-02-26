@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.model.Animation;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -21,6 +22,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.LinkLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
+import com.kotcrab.vis.ui.widget.VisTextField;
 import in.mcxiv.app.AppManager;
 
 public class LoginScreen extends AbstractScreen {
@@ -40,6 +42,9 @@ public class LoginScreen extends AbstractScreen {
     public void show() {
         Gdx.input.setCatchKey(Input.Keys.BACK, false);
         super.show();
+        for (Actor child : root.getChildren())
+            if(child instanceof VisTextField)
+                ((VisTextField) child).setText("");
     }
 
     public void create() {
